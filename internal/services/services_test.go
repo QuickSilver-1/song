@@ -42,7 +42,7 @@ func TestSongService_GetLib(t *testing.T) {
 func TestSongService_GetText(t *testing.T) {
 	id := domain.Id(1)
 	page := domain.Page(1)
-	text := domain.SongText("Verse 1\n\nVerse 2")
+	text := domain.SongText("Verse 1\\n\\nVerse 2")
 	expectedText := "Verse 1"
 
 	mockCacheRepo.On("GetText", id).Return(&text, nil)
