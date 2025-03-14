@@ -1,0 +1,233 @@
+basePath: /
+definitions:
+  domain.Song:
+    properties:
+      group:
+        description: Группа или исполнитель
+        type: string
+      id:
+        description: Идентификатор песни
+        type: integer
+      link:
+        description: Ссылка на песню
+        type: string
+      name:
+        description: Название песни
+        type: string
+      releaseDate:
+        description: Дата выпуска песни
+        type: string
+      text:
+        description: Текст песни
+        type: string
+    type: object
+  domain.SongDataByUser:
+    properties:
+      group:
+        description: Группа или исполнитель
+        type: string
+      song:
+        description: Название песни
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server for a song management application.
+  title: Song API
+  version: "1.0"
+paths:
+  /lib:
+    get:
+      consumes:
+      - application/json
+      description: Get songs library
+      parameters:
+      - description: Song name
+        in: query
+        name: song
+        type: string
+      - description: Group name
+        in: query
+        name: group
+        type: string
+      - description: Release date in format dd.mm.yyyy
+        in: query
+        name: releaseDate
+        type: string
+      - description: Song text
+        in: query
+        name: text
+        type: string
+      - description: Link
+        in: query
+        name: link
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Song'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get library
+      tags:
+      - library
+  /song:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a song by ID
+      parameters:
+      - description: Song ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete song
+      tags:
+      - song
+    patch:
+      consumes:
+      - application/json
+      description: Change song details by ID
+      parameters:
+      - description: Song ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Song details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Song'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Change song
+      tags:
+      - song
+    post:
+      consumes:
+      - application/json
+      description: Create a new song
+      parameters:
+      - description: Song details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.SongDataByUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create song
+      tags:
+      - song
+  /text:
+    get:
+      consumes:
+      - application/json
+      description: Get the text of a song
+      parameters:
+      - description: Song ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get song text
+      tags:
+      - song
+swagger: "2.0"
